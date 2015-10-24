@@ -12,7 +12,11 @@ public class CaroApp {
 
     private static int[][]   caroBoard    = new int[CARO_SIZE][CARO_SIZE];
 
+    private static int       ai;
+    private static boolean   isFirstInput = true;
+
     public static void main(String[] args) {
+
         while (true) {
             printCaroBoard(caroBoard);
             System.out.println("*****\nInput next move:\n 1. x or o\n 2. X =? \n 3. Y = ?\n*****\n Input (ex: x,1,2):");
@@ -22,7 +26,7 @@ public class CaroApp {
 
                 moveFromInput(inputStr);
 
-                NextMove nextMove = CaroAI.getNextMove(caroBoard);
+                NextMove nextMove = CaroAI.getNextMove(caroBoard, ai);
                 printNextMove(nextMove);
 
                 move(nextMove);
@@ -39,9 +43,17 @@ public class CaroApp {
         switch (input[0]) {
         case "o":
             nextMove = new NextMove(CARO_O, Integer.parseInt(input[1]) - 1, Integer.parseInt(input[2]) - 1);
+            if (isFirstInput){
+                setAI(CARO_O);
+                isFirstInput = false;
+            }
             break;
         case "x":
             nextMove = new NextMove(CARO_X, Integer.parseInt(input[1]) - 1, Integer.parseInt(input[2]) - 1);
+            if (isFirstInput){
+                setAI(CARO_X);
+                isFirstInput = false;
+            }
             break;
         default:
             break;
@@ -50,6 +62,10 @@ public class CaroApp {
         if (nextMove != null) {
             move(nextMove);
         }
+    }
+
+    private static void setAI(int caro) {
+        ai = caro;
     }
 
     private static void move(NextMove nextMove) {
