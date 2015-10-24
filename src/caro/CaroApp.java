@@ -1,23 +1,64 @@
 package caro;
 
-public class CaroApp {
-    private static final int CARO_SIZE = 20;
-    private static final int CARO_0    = 0;
-    private static final int CARO_1    = 1;
-    private static final int CARO_2    = 2;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
-    private static int[][]   caroBoard = new int[CARO_SIZE][CARO_SIZE];
+public class CaroApp {
+    private static final int CARO_SIZE    = 20;
+    private static final int CARO_DEFAULT = 0;
+    private static final int CARO_O       = 1;                            // "o"
+    private static final int CARO_X       = 2;                            // "x"
+
+    private static int[][]   caroBoard    = new int[CARO_SIZE][CARO_SIZE];
 
     public static void main(String[] args) {
-        printCaroBoard(caroBoard);
-        System.out.println("*****\nInput next move:\n 1. x or o\n 2. X =? \n 3. Y = ?\n*****\n Input:");
+        while (true) {
+            printCaroBoard(caroBoard);
+            System.out.println("*****\nInput next move:\n 1. x or o\n 2. X =? \n 3. Y = ?\n*****\n Input (ex: x,1,2):");
+            try {
+                BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
+                String inputStr = bufferRead.readLine();
 
-        NextMove nextMove = CaroAI.getNextMove(caroBoard);
-        printNextMove(nextMove);
+                moveFromInput(inputStr);
+
+                NextMove nextMove = CaroAI.getNextMove(caroBoard);
+                printNextMove(nextMove);
+
+                move(nextMove);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static void moveFromInput(String inputStr) {
+        String[] input = inputStr.split(",");
+        NextMove nextMove = null;
+
+        switch (input[0]) {
+        case "o":
+            nextMove = new NextMove(CARO_O, Integer.parseInt(input[1]) - 1, Integer.parseInt(input[2]) - 1);
+            break;
+        case "x":
+            nextMove = new NextMove(CARO_X, Integer.parseInt(input[1]) - 1, Integer.parseInt(input[2]) - 1);
+            break;
+        default:
+            break;
+        }
+
+        if (nextMove != null) {
+            move(nextMove);
+        }
+    }
+
+    private static void move(NextMove nextMove) {
+        caroBoard[nextMove.getX()][nextMove.getY()] = nextMove.getVal();
     }
 
     private static void printNextMove(NextMove nextMove) {
         System.out.println("Next move: x = " + nextMove.getX() + ", y = " + nextMove.getY());
+        System.out.println("--------------------------------------------------");
     }
 
     private static void printCaroBoard(int[][] caroBoard) {
@@ -45,13 +86,13 @@ public class CaroApp {
                 }
 
                 switch (caroBoard[i][j]) {
-                case CARO_0:
+                case CARO_DEFAULT:
                     System.out.print(".  ");
                     break;
-                case CARO_1:
+                case CARO_O:
                     System.out.print("o  ");
                     break;
-                case CARO_2:
+                case CARO_X:
                     System.out.print("x  ");
                     break;
                 default:
