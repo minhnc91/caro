@@ -17,8 +17,7 @@ public class CaroApp {
     }
 
     private static void printNextMove(NextMove nextMove) {
-        // TODO Auto-generated method stub
-
+        System.out.println("Next move: x = " + nextMove.getX() + ", y = " + nextMove.getY());
     }
 
     private static void printCaroBoard(int[][] caroBoard) {

@@ -4,6 +4,11 @@ public class NextMove {
     int x;
     int y;
 
+    public NextMove(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
     public int getX() {
         return x;
     }

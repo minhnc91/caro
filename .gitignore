@@ -1,0 +1,8 @@
+/flume-ng-hbase-sink/target/
+/mendy-batch/target/
+.classpath
+.project
+.settings/
+.DS_Store
+/mendy-batch/.idea/
+/mendy-batch/mendy-batch.iml
