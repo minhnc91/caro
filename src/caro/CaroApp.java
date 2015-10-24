@@ -13,6 +13,7 @@ public class CaroApp {
     private static int[][]   caroBoard    = new int[CARO_SIZE][CARO_SIZE];
 
     private static int       ai;
+    private static int       human;
     private static boolean   isFirstInput = true;
 
     public static void main(String[] args) {
@@ -26,7 +27,7 @@ public class CaroApp {
 
                 moveFromInput(inputStr);
 
-                NextMove nextMove = CaroAI.getNextMove(caroBoard, ai);
+                NextMove nextMove = CaroAI.getNextMove(caroBoard, ai, human);
                 printNextMove(nextMove);
 
                 move(nextMove);
@@ -44,14 +45,16 @@ public class CaroApp {
         case "o":
             nextMove = new NextMove(CARO_O, Integer.parseInt(input[1]) - 1, Integer.parseInt(input[2]) - 1);
             if (isFirstInput){
-                setAI(CARO_O);
+                ai = CARO_X;
+                human = CARO_O;
                 isFirstInput = false;
             }
             break;
         case "x":
             nextMove = new NextMove(CARO_X, Integer.parseInt(input[1]) - 1, Integer.parseInt(input[2]) - 1);
             if (isFirstInput){
-                setAI(CARO_X);
+                ai = CARO_O;
+                human = CARO_X;
                 isFirstInput = false;
             }
             break;
@@ -64,16 +67,12 @@ public class CaroApp {
         }
     }
 
-    private static void setAI(int caro) {
-        ai = caro;
-    }
-
     private static void move(NextMove nextMove) {
         caroBoard[nextMove.getX()][nextMove.getY()] = nextMove.getVal();
     }
 
     private static void printNextMove(NextMove nextMove) {
-        System.out.println("Next move: x = " + nextMove.getX() + ", y = " + nextMove.getY());
+        System.out.println("Next move: type = " + nextMove.getVal() + ", x = " + nextMove.getX() + ", y = " + nextMove.getY());
         System.out.println("--------------------------------------------------");
     }
 

@@ -9,24 +9,24 @@ public class CaroAI {
     private static final int SCORE_MINUS1 = 10;
     private static final int SCORE_MINUS2 = 1000;
 
-    public static NextMove getNextMove(int[][] caroBoard, int ai) {
+    public static NextMove getNextMove(int[][] caroBoard, int ai, int human) {
         int[][] scoreEstimate = estimateScore(caroBoard, ai);
         NextMove bestMove = null;
 
         // Need ban human move
-        bestMove = checkHumanMove(caroBoard, ai);
+        bestMove = checkHumanMove(caroBoard, human);
         if (bestMove != null) {
             return bestMove;
         }
 
         // Best score
-        bestMove = new NextMove(caroBoard[0][0], 1, 1);
+        bestMove = new NextMove(ai, 1, 1);
         int maxScore = scoreEstimate[0][0];
         for (int i = 0; i < scoreEstimate.length; i++) {
             for (int j = 0; j < scoreEstimate.length; j++) {
                 if (maxScore < scoreEstimate[i][j]) {
                     maxScore = scoreEstimate[i][j];
-                    bestMove = new NextMove(caroBoard[i][j], i + 1, j + 1);
+                    bestMove = new NextMove(ai, i + 1, j + 1);
                 }
             }
         }
@@ -34,8 +34,14 @@ public class CaroAI {
         return bestMove;
     }
 
-    private static NextMove checkHumanMove(int[][] caroBoard, int ai) {
-        // TODO Auto-generated method stub
+    private static NextMove checkHumanMove(int[][] caroBoard, int human) {
+//        for (int i = 0; i < caroBoard.length; i++) {
+//            for (int j = 0; j < caroBoard.length; j++) {
+//                if (isNearHaveThree(caroBoard, i, j, human)) {
+//
+//                }
+//            }
+//        }
         return null;
     }
 
@@ -52,7 +58,7 @@ public class CaroAI {
     }
 
     private static int getScore(int[][] caroBoard, int i, int j, int ai) {
-        if (caroBoard[i][j] == 0) {
+        if (caroBoard[i][j] != 0) {
             return 0;
         }
 
@@ -77,23 +83,49 @@ public class CaroAI {
         return score;
     }
 
-    private static boolean isNearHaveFour(int[][] caroBoard, int i, int j, int ai) {
+    private static boolean isNearHaveFour(int[][] caroBoard, int i, int j, int type) {
         // TODO Auto-generated method stub
         return false;
     }
 
-    private static boolean isNearHaveThree(int[][] caroBoard, int i, int j, int ai) {
+    private static boolean isNearHaveThree(int[][] caroBoard, int i, int j, int type) {
         // TODO Auto-generated method stub
         return false;
     }
 
-    private static boolean isNearHaveTwo(int[][] caroBoard, int i, int j, int ai) {
+    private static boolean isNearHaveTwo(int[][] caroBoard, int i, int j, int type) {
         // TODO Auto-generated method stub
         return false;
     }
 
-    private static boolean isNearHaveOne(int[][] caroBoard, int i, int j, int ai) {
-        // TODO Auto-generated method stub
+    private static boolean isNearHaveOne(int[][] caroBoard, int i, int j, int type) {
+        if (i - 1 >= 0 && caroBoard[i - 1][j] == type) {
+            return true;
+        }
+        if (j - 1 >= 0 && caroBoard[i][j - 1] == type) {
+            return true;
+        }
+
+        if (i + 1 < 20 && caroBoard[i + 1][j] == type) {
+            return true;
+        }
+        if (j + 1 < 0 && caroBoard[i][j + 1] == type) {
+            return true;
+        }
+
+        if (i - 1 >= 0 && j - 1 >= 0 && caroBoard[i - 1][j - 1] == type) {
+            return true;
+        }
+        if (i - 1 >= 0 && j + 1 < 20 && caroBoard[i - 1][j + 1] == type) {
+            return true;
+        }
+        if (i + 1 < 20 && j - 1 >= 0 && caroBoard[i + 1][j - 1] == type) {
+            return true;
+        }
+        if (i + 1 < 20 && j + 1 < 20 && caroBoard[i + 1][j + 1] == type) {
+            return true;
+        }
+
         return false;
     }
 
